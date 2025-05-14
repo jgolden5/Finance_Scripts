@@ -1,0 +1,99 @@
+How to determine my wage's class Ω
+a = annual wage
+m = order of magnitude = number_of_digits(a)
+i = class incrementation value = '5^(m-4) * 1,000', where m = order of magnitude of wage). [In the case of an annual wage of 50,000, i = 5,000; for 200,000, i = 25,000; and for 2,500,000, i = 125,000]
+Ω = starting at 10,000 a year for class A, add i to the amount until you get to the range you're in. [Note that class A is 10,000-14,999, class B is 15,000-19,999, etc.]
+
+      annual      monthly      biweekly      weekly      hourly (assuming 40 hours a week)      acceptability level
+gross 10,000      833          384           192         4.80   gross  A
+net   9,035       752          347           173         4.34   net    A
+
+gross 15,000      1250         576           288         7.21   gross  B
+net   13,552      1129         521           260         6.51   net    B
+
+gross 20,000      1666         769           384         9.61   gross  C
+net   18,070      1505         695           347         8.68   net    C
+
+gross 25,000      2083         961           480         12.01  gross  D
+net   22,588      1882         868           434         10.85  net    D
+
+gross 30,000      2500         1153          576         14.42  gross  E
+net   27,105      2258         1042          521         13.03  net    E
+
+gross 35,000      2916         1346          673         16.82  gross  F
+net   31,123      2593         1197          598         14.96  net    F
+
+gross 40,000      3333         1538          769         19.23  gross  G
+net   35,140      2928         1351          675         16.89  net    G
+
+gross 45,000      3750         1730          865         21.63  gross  H
+net   39,157      3263         1506          753         18.82  net    H
+           
+gross 50,000      4166         1923          961         24.03  gross  I
+net   43,175      3597         1660          830         20.75  net    I                         
+
+gross 55,000      4583         2215          1057        26.44  gross  J
+net   47,169      3930         1814          907         22.67  net    J                        -
+
+gross 60,000      5000         2307          1153        28.84  gross  K
+net   51,087      4257         1964          982         24.56  net    K                        =
+
+gross 65,000      5416         2500          1250        31.25  gross  L
+net   55,005      4583         2115          1057        26.44  net    L                        =
+
+gross 70,000      5833         2692          1346        33.65  gross  M
+net   58,922      4910         2266          1133        28.32  net    M                        =
+
+gross 75,000      6250         2884          1442        36.05  gross  N
+net   62,839      5236         2416          1208        30.21  net    N                        =
+
+gross 80,000      6666         3076          1538        38.46  gross  O
+net   66,757      5563         2567          1283        32.09  net    O                        +
+
+gross 85,000      7083         3269          1634        40.86  gross  P
+net   70,675      5889         2718          1359        33.97  net    P
+
+gross 90,000      7500         3461          1730        43.26  gross  Q
+net   74,592      6215         2868          1434        35.86  net    Q
+
+gross 95,000      7916         3653          1826        45.67  gross  R
+net   78,510      6542         3019          1509        37.74  net    R
+
+gross 100,000     8333         3846          1923        48.07  gross  S
+net   82,427      6868         3170          1585        39.62  net    S
+
+gross 125,000     10416        4807          2403        60.09  gross  T
+net   93,690      7807         3603          1801        45.04  net    T
+
+gross 150,000     12500        5769          2884        72.11  gross  U
+net   119,297     9941         4588          2294        57.35  net    U
+
+gross 175,000     14583        6730          3365        84.13  gross  V
+net   126,865     10572        4879          2439        60.99  net    V
+
+gross 200,000     16666        7692          3846        96.15  gross  W
+net   153,472     12789        5902          2951        73.78  net    W
+
+gross 225,000     18750        8653          4326        108.17 gross  X
+net   170,559     14213        6559          3279        81.99  net    X
+
+gross 250,000     20833        9615          4807        120.19 gross  Y
+net   187,381     15615        7206          3603        90.08  net    Y
+
+gross 275,000     22916        10576         5288        132.21 gross  Z
+net   203,968     16997        7844          3922        98.06  net    Z
+
+gross 300,000     25000        11538         5769        144.23 gross  AA
+net   220,556     18379        8482          4241        106.03 net    AA
+
+gross 400,000     33333        15384         7692        192.30 gross  AE
+net   286,906     23908        11034         5517        137.93 net    AE
+
+gross 500,000     41666        19230         9615        240.38 gross  AI
+net   347,224     28935        13354         6677        166.93 net    AI
+
+gross 750,000     62500        28846         14423       360.57 gross  AS
+net   486,530     40544        18712         9356        233.90 net    AS
+
+gross 1,000,000   83333        38461         19230       480.76 gross  AAC
+net   620,538     51711        23866         11933       298.33 net
