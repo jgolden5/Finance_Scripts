@@ -1,1 +1,0 @@
-/Users/jgolden1/bash/wages.sh
