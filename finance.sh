@@ -53,7 +53,7 @@ hours_per_day_per_week() { #40 8 5; (hours per week, hours per day, days per wee
   days_per_week="$3"
   if [[ ! $1 =~ [0-9] ]]; then
     hours_per_week="$(echo "scale=2; $hours_per_day * $days_per_week" | bc)"
-    echo "Working $hours_per_day for $days_per_week days per week means you're working $hours_per_week hours per week"
+    echo "Working $hours_per_day hours a day for $days_per_week days per week means you're working $hours_per_week hours per week"
   elif [[ ! $2 =~ [0-9] ]]; then
     hours_per_day="$(echo "scale=2; $hours_per_week / $days_per_week" | bc)"
     echo "Working for $hours_per_week hours a week for $days_per_week days per week means you must work $hours_per_day hours per day"
