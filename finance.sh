@@ -66,7 +66,3 @@ hours_per_day_per_week() { #40 8 5; (hours per week, hours per day, days per wee
 math_bash() {
   echo "scale=2; $@" | bc
 }
-
-budget() {
-  read -n1 -p "(a)dd to budget, (d)elete from budget, (l)ist budget)"
-}
