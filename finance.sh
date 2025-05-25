@@ -12,6 +12,7 @@ wages_from_annual() {
   get_monthly_from_annual $a
   get_biweekly_from_annual $a
   get_weekly_from_annual $a
+  get_daily_from_annual $a
   get_hourly_from_annual $a
 }
 
@@ -28,6 +29,11 @@ get_biweekly_from_annual() {
 get_weekly_from_annual() {
   weekly_from_annual="$(echo "$1 / 52" | bc)"
   echo "Weekly ~= \$$weekly_from_annual"
+}
+
+get_daily_from_annual() {
+  daily_from_annual="$(echo "scale=2; $1 / 52 / 5" | bc)"
+  echo "Daily ~= \$$daily_from_annual"
 }
 
 get_hourly_from_annual() {
