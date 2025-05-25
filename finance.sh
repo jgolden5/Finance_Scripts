@@ -88,14 +88,15 @@ add_weekly_wages() {
 }
 
 rank_wage() {
-  read -n1 -p "Which type of wage do you want to rank? (a)nnual/(y)early, (m)onthly, (b)iweekly, (w)eekly, or (h)ourly: " wage_type
+  read -n1 -p "Which type of wage do you want to rank? (a)nnual/(y)early, (m)onthly, (b)iweekly, (w)eekly, (d)aily, or (h)ourly: " wage_type
   echo
   case $wage_type in
-    a|y) column=2; echo -n "Annual: " ;;
-    m)   column=3; echo -n "Monthly: " ;;
-    b)   column=4; echo -n "Bi-weekly: " ;;
-    w)   column=5; echo -n "Weekly: " ;;
-    h)   column=6; echo -n "Hourly: " ;;
+    a|y) column=2; echo -n "Annual: ";;
+    m)   column=3; echo -n "Monthly: ";;
+    b)   column=4; echo -n "Bi-weekly: ";;
+    w)   column=5; echo -n "Weekly: ";;
+    d)   column=6; echo -n "Daily: ";;
+    h)   column=7; echo -n "Hourly: ";;
     *)
       echo "Sorry, wage type \"$wage_type\" is not recognized. Exiting this function now."
       return 1
@@ -104,10 +105,11 @@ rank_wage() {
   awk -v limit="$1" -v col="$column" '
   {
     if ($(col) <= limit) {
-      wage_letter = $8
-      last_column_in_range = $(col)
+      wage_letter = $9
+      prev_line = $0
     } else {
-      print wage_letter " - " last_column_in_range
+      print wage_letter
+      print prev_line
       exit
     }
   }
