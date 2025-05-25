@@ -66,3 +66,17 @@ hours_per_day_per_week() { #40 8 5; (hours per week, hours per day, days per wee
 math_bash() {
   echo "scale=2; $@" | bc
 }
+
+add_weekly_wages() {
+  weekly_wage=
+  for wage in "$@"; do
+    read -p "How many hours a week will you work at \$$wage an hour? " hours_a_week
+    if [[ $weekly_wage ]]; then
+      weekly_wage="$(echo "scale=2; $weekly_wage + $hours_a_week * $wage" | bc)"
+    else
+      weekly_wage="$(echo "scale=2; $hours_a_week * $wage" | bc)"
+    fi
+    echo "weekly wage = $weekly_wage"
+  done
+  echo "Total weekly wage is $weekly_wage"
+}
