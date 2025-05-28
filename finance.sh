@@ -115,3 +115,24 @@ rank_wage() {
   }
   ' gross_wages.txt
 }
+
+gross_to_net() {
+  letter="$1"
+  if [[ ! $letter ]]; then
+    echo "Please select a letter"
+  else
+    read -n1 -p "Which type of wage do you want to rank? (a)nnual/(y)early, (m)onthly, (b)iweekly, (w)eekly, (d)aily, or (h)ourly (leave blank for all): " wage_type
+    echo
+    case $wage_type in 
+      a|y) wage_keyword="Annual"; column=2;;
+      m) wage_keyword="Monthly"; column=3;;
+      b) wage_keyword="Biweekly"; column=4;;
+      w) wage_keyword="Weekly"; column=5;;
+      d) wage_keyword="Daily"; column=6;;
+      h) wage_keyword="Hourly"; column=7;;
+      *) wage_keyword="All"; column=0;;
+    esac
+    echo "$wage_keyword:"
+    cat net_wages.txt | grep " $letter$" | awk -v col="$column" '{ print $(col) }'
+  fi
+}
