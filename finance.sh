@@ -48,7 +48,7 @@ overtime() {
   else
     hours=60
   fi
-  overtime_hours=$((hours - 40))
+  overtime_hours=$(echo "scale=2; $hours - 40" | bc)
   overtime_calculation="$(echo "scale=2; $wage * 40 + $wage * 1.5 * $overtime_hours" | bc)"
   echo "Overtime for \$$wage an hour at $hours hours a week = $overtime_calculation"
 }
@@ -73,7 +73,7 @@ math_bash() {
   echo "scale=2; $@" | bc
 }
 
-add_weekly_wages() {
+add_weekly_wages() { #note this does NOT account for overtime, so don't list overtime here
   weekly_wage=
   for wage in "$@"; do
     read -p "How many hours a week will you work at \$$wage an hour? " hours_a_week
@@ -114,25 +114,4 @@ rank_wage() {
     }
   }
   ' gross_wages.txt
-}
-
-gross_to_net() {
-  letter="$1"
-  if [[ ! $letter ]]; then
-    echo "Please select a letter"
-  else
-    read -n1 -p "Which type of wage do you want to rank? (a)nnual/(y)early, (m)onthly, (b)iweekly, (w)eekly, (d)aily, or (h)ourly (leave blank for all): " wage_type
-    echo
-    case $wage_type in 
-      a|y) wage_keyword="Annual"; column=2;;
-      m) wage_keyword="Monthly"; column=3;;
-      b) wage_keyword="Biweekly"; column=4;;
-      w) wage_keyword="Weekly"; column=5;;
-      d) wage_keyword="Daily"; column=6;;
-      h) wage_keyword="Hourly"; column=7;;
-      *) wage_keyword="All"; column=0;;
-    esac
-    echo "$wage_keyword:"
-    cat net_wages.txt | grep " $letter$" | awk -v col="$column" '{ print $(col) }'
-  fi
 }
