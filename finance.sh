@@ -121,5 +121,8 @@ rank_wage() {
       exit
     }
   }
-  ' gross_wages.txt
+  ' gross_wages.txt | tee output.txt
+  local letter="$(awk '{ print $NF }' output.txt)"
+  grep " $letter" net_wages.txt
+  rm output.txt
 }
