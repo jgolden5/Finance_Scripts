@@ -126,3 +126,24 @@ rank_wage() {
   grep " $letter" net_wages.txt
   rm output.txt
 }
+
+four_walls_percentage_of_net_monthly_income() {
+  if [[ $1 ]]; then
+    local net_income="$1"
+    local food=400
+    local utilities=125
+    local transportation=662
+    local shelter=1650.59
+    local four_walls_total=$(math_bash "$food + $utilities + $transportation + $shelter")
+    local four_walls_decimal="$(echo "scale=4; $four_walls_total / $net_income" | bc)"
+    local margin_decimal="$(math_bash "1 - $four_walls_decimal")"
+    local margin_total="$(math_bash "$net_income - $four_walls_total")"
+    local four_walls_percentage="$(math_bash "$four_walls_decimal * 100")"
+    local margin_percentage="$(math_bash "$margin_decimal * 100")"
+    echo "Net monthly:  100% = \$$net_income"
+    echo "Four walls: ${four_walls_percentage::-2}% = \$$four_walls_total"
+    echo "Margin:     ${margin_percentage::-2}% = \$$margin_total"
+  else
+    echo "Please enter an income as parameter 1 for this function"
+  fi
+}
