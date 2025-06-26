@@ -78,8 +78,8 @@ add_weekly_wages() {
   for wage in "$@"; do
     read -p "How many hours a week will you work at \$$wage an hour? " hours_a_week
     local overtime=
-    if [[ $hours_a_week -gt 40 ]]; then
-      overtime="$((hours_a_week - 40))"
+    if (( $(echo "$hours_a_week > 40" | bc -l) )); then
+      overtime="$(echo "scale=2; $hours_a_week - 40" | bc)"
       hours_a_week=40
     fi
     if [[ $weekly_wage ]]; then
