@@ -73,14 +73,22 @@ math_bash() {
   echo "scale=2; $@" | bc
 }
 
-add_weekly_wages() { #note this does NOT account for overtime, so don't list overtime here
-  weekly_wage=
+add_weekly_wages() {
+  local weekly_wage=
   for wage in "$@"; do
     read -p "How many hours a week will you work at \$$wage an hour? " hours_a_week
+    local overtime=
+    if [[ $hours_a_week -gt 40 ]]; then
+      overtime="$((hours_a_week - 40))"
+      hours_a_week=40
+    fi
     if [[ $weekly_wage ]]; then
       weekly_wage="$(echo "scale=2; $weekly_wage + $hours_a_week * $wage" | bc)"
     else
       weekly_wage="$(echo "scale=2; $hours_a_week * $wage" | bc)"
+    fi
+    if [[ "$overtime" ]]; then
+      weekly_wage="$(echo "scale=2; $weekly_wage + $overtime * $wage * 1.5" | bc)"
     fi
     echo "weekly wage = $weekly_wage"
   done
