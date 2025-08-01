@@ -147,3 +147,31 @@ four_walls_percentage_of_net_monthly_income() {
     echo "Please enter an income as parameter 1 for this function"
   fi
 }
+
+baby_steps() { #$1 = margin in budget per month; $2 = dollars remaining till goal. Also note that the month calculations are assuming the current month was ALREADY paid for, so subtract difference from this month BEFORE running calucations
+  if [[ "$1" ]] && [[ "$2" ]]; then
+    local margin="$1"
+    local dollars_remaining="$2"
+    local quotient_before_rounding="$(echo "scale=2; $dollars_remaining / $margin" | bc)"
+    local months_to_goal="$(echo "scale=2; $quotient_before_rounding + 1" | bc | sed 's/\(.*\)\..*/\1/')"
+  else
+    echo "2 parameters are required"
+    echo "\$1 = margin in budget per month; \$2 = dollars remaining till goal. For example, if I have \$500 margin in my budget per month and I have \$2,500 remaining on my baby step goa, I would run this function like this: \"baby_steps 500 2500\""
+  fi
+  echo "Months to goal = $months_to_goal ($quotient_before_rounding)"
+  echo "At a pace of \$$margin per month, goal of \$$dollars_remaining will be achieved by $(get_months_from_now $months_to_goal)"
+}
+
+get_months_from_now() {
+  local n="$1"
+  local current_month="$(date +%-m)"
+  local current_year="$(date +%Y)"
+  local months_from_current_year_start="$((n + current_month))"
+  local target_month=$((months_from_current_year_start % 12))
+  local target_year=$((months_from_current_year_start / 12 + current_year))
+  if [[ $target_month == 0 ]]; then
+    target_month=12
+    $((--target_year))
+  fi
+  date -d "$target_month/1/$target_year" +"%B %Y"
+}
