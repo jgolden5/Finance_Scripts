@@ -154,6 +154,9 @@ baby_steps() { #$1 = margin in budget per month; $2 = dollars remaining till goa
     local dollars_remaining="$2"
     local quotient_before_rounding="$(echo "scale=2; $dollars_remaining / $margin" | bc)"
     local months_to_goal="$(echo "scale=2; $quotient_before_rounding + 1" | bc | sed 's/\(.*\)\..*/\1/')"
+    if [[ "$(($dollars_remaining % $margin))" == 0 ]]; then
+      ((months_to_goal--))
+    fi
   else
     echo "2 parameters are required"
     echo "\$1 = margin in budget per month; \$2 = dollars remaining till goal. For example, if I have \$500 margin in my budget per month and I have \$2,500 remaining on my baby step goa, I would run this function like this: \"baby_steps 500 2500\""
