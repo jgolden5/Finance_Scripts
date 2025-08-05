@@ -159,7 +159,7 @@ baby_steps() { #$1 = margin in budget per month; $2 = dollars remaining till goa
     fi
   else
     echo "2 parameters are required"
-    echo "\$1 = margin in budget per month; \$2 = dollars remaining till goal. For example, if I have \$500 margin in my budget per month and I have \$2,500 remaining on my baby step goa, I would run this function like this: \"baby_steps 500 2500\""
+    echo "\$1 = margin in budget per month; \$2 = dollars remaining till goal. For example, if I have \$500 margin in my budget per month and I have \$2,500 remaining on my baby step goal, I would run this function like this: \"baby_steps 500 2500\""
   fi
   echo "Months to goal = $months_to_goal ($quotient_before_rounding)"
   echo "At a pace of \$$margin per month, goal of \$$dollars_remaining will be achieved by $(get_months_from_now $months_to_goal)"
@@ -177,4 +177,11 @@ get_months_from_now() {
     $((--target_year))
   fi
   date -d "$target_month/1/$target_year" +"%B %Y"
+}
+
+raise() {
+  local original_wage="$1"
+  local percent_raise="$2"
+  local raise="$(echo "scale=2; $original_wage + $original_wage * $percent_raise" | bc)"
+  echo "From \$$original_wage to \$$raise"
 }
