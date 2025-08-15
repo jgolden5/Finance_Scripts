@@ -190,3 +190,16 @@ raise() {
     echo "Please enter: raise \$original_wage \$percent_raise"
   fi
 }
+
+compound_interest() { #$1 = amount invested per year; $2 = interest rate; $3 = number of years
+  local current_investment=$1
+  for i in $(seq $3); do
+    if [[ $i == 1 ]]; then
+      echo "Year 1 = $current_investment"
+    else
+      local amount_added="$(echo "scale=2; $current_investment * ($2 / 100)" | bc)"
+      current_investment="$(echo "scale=2; $current_investment + $amount_added" | bc)"
+      echo "Year $i = $current_investment"
+    fi
+  done
+}
