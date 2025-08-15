@@ -88,6 +88,7 @@ add_weekly_wages() {
       weekly_wage="$(echo "scale=2; $hours_a_week * $wage" | bc)"
     fi
     if [[ "$overtime" ]]; then
+      echo "\$$overtime overtime was added"
       weekly_wage="$(echo "scale=2; $weekly_wage + $overtime * $wage * 1.5" | bc)"
     fi
     echo "weekly wage = $weekly_wage"
@@ -130,7 +131,7 @@ rank_wage() {
 four_walls_percentage_of_net_monthly_income() {
   if [[ $1 ]]; then
     local net_income="$1"
-    local food=400
+    local food=450
     local utilities=125
     local transportation=662
     local shelter=1650.59
