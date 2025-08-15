@@ -180,8 +180,12 @@ get_months_from_now() {
 }
 
 raise() {
-  local original_wage="$1"
-  local percent_raise="$2"
-  local raise="$(echo "scale=2; $original_wage + $original_wage * $percent_raise" | bc)"
-  echo "From \$$original_wage to \$$raise"
+  if [[ $1 ]] && [[ $2 ]]; then
+    local original_wage="$1"
+    local percent_raise="$2"
+    local raise="$(echo "scale=2; $original_wage + $original_wage * $percent_raise" | bc)"
+    echo "From \$$original_wage to \$$raise"
+  else
+    echo "Please enter: raise \$original_wage \$percent_raise"
+  fi
 }
