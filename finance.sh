@@ -203,3 +203,9 @@ compound_interest() { #$1 = amount invested per year; $2 = interest rate; $3 = n
     fi
   done
 }
+
+view_functions() {
+  grep '()' finance.sh
+}
+
+alias ff="view_functions"
