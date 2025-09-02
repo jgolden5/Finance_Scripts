@@ -109,12 +109,12 @@ wage_change_per_month() {
   echo "Before = $before"
   echo "After = $after"
   color=
-  if (( $(echo "$difference > 0" | bc -l) )); then
+  if (( $(echo "$difference >= 0" | bc -l) )); then
     color="\e[32m"
   else
     color="\e[31m"
   fi
-  echo -e "${color}Difference = $difference\e[0m"
+  echo -e "${color}Difference = $difference\e[0m per month"
 }
 
 rank_wage() {
