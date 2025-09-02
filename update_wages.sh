@@ -20,5 +20,5 @@ while true; do
     echo -n "$number_of_seconds seconds have passed. "
   fi
   echo "Current wage = \$$total_wage"
-  sleep 1
+  sleep 0.75
 done
