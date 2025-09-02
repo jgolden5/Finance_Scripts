@@ -96,7 +96,7 @@ add_weekly_wages() {
   echo "Total weekly wage is $weekly_wage"
 }
 
-wage_change_per_month() {
+compare_hourly_wage_difference_per_month() {
   read -p "Please enter constant wage, followed by number of weekly hours at said wage: " constant_wage constant_hours
   read -p "Please enter current wage (before increase), followed by hours: " before_var_wage before_var_hours
   read -p "Please enter imagined wage (after increase), followed by hours: " after_var_wage after_var_hours
