@@ -117,6 +117,34 @@ wage_change_per_month() {
   echo -e "${color}Difference = $difference\e[0m per month"
 }
 
+annual_gross_to_net_rough_estimate() { #note these tax brackets are for married filing jointly
+  local gross="$1"
+  local percentage_kept=
+  if [[ $gross -le 22000 ]]; then
+    percentage_kept="0.875"
+  elif [[ $gross -le 89450 ]]; then
+    percentage_kept="0.855"
+  elif [[ $gross -le 190750 ]]; then
+    percentage_kept="0.755"
+  elif [[ $gross -le 364200 ]]; then
+    percentage_kept="0.735"
+  elif [[ $gross -le 462500 ]]; then
+    percentage_kept="0.655"
+  elif [[ $gross -le 693750 ]]; then
+    percentage_kept="0.625"
+  else
+    percentage_kept="0.605"
+  fi
+  net=$(echo "scale=2; $gross * $percentage_kept" | bc)
+  taxes=$(echo "scale=2; $gross - $net" | bc)
+  echo "Gross = \$$gross"
+  echo "Taxes =~ \$$taxes"
+  echo
+  echo "Take home pay summary (Net Income):"
+  echo "Annual =~ \$$net"
+  wages_from_annual $net
+}
+
 rank_wage() {
   read -n1 -p "Which type of wage do you want to rank? (a)nnual/(y)early, (m)onthly, (b)iweekly, (w)eekly, (d)aily, or (h)ourly: " wage_type
   echo
