@@ -96,6 +96,27 @@ add_weekly_wages() {
   echo "Total weekly wage is $weekly_wage"
 }
 
+wage_change_per_month() {
+  read -p "Please enter constant wage, followed by number of weekly hours at said wage: " constant_wage constant_hours
+  read -p "Please enter current wage (before increase), followed by hours: " before_var_wage before_var_hours
+  read -p "Please enter imagined wage (after increase), followed by hours: " after_var_wage after_var_hours
+  constant_hours=${constant_hours:-40}
+  before_var_hours=${before_var_hours:-40}
+  after_var_hours=${after_var_hours:-40}
+  before="$(echo "scale=2; ($before_var_wage * $before_var_hours + $constant_wage * $constant_hours) * 4.33" | bc)"
+  after="$(echo "scale=2; ($after_var_wage * $after_var_hours + $constant_wage * $constant_hours) * 4.33" | bc)"
+  difference="$(echo "scale=2; $after - $before" | bc)"
+  echo "Before = $before"
+  echo "After = $after"
+  color=
+  if (( $(echo "$difference > 0" | bc -l) )); then
+    color="\e[32m"
+  else
+    color="\e[31m"
+  fi
+  echo -e "${color}Difference = $difference\e[0m"
+}
+
 rank_wage() {
   read -n1 -p "Which type of wage do you want to rank? (a)nnual/(y)early, (m)onthly, (b)iweekly, (w)eekly, (d)aily, or (h)ourly: " wage_type
   echo
