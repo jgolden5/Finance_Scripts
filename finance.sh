@@ -3,9 +3,6 @@
 wages_from_annual() {
   if [[ ! "$1" ]]; then
     read -p "Enter annual wage: " a
-    if [[ $a ]]; then
-      annual=$a
-    fi
   else
     a="$1"
   fi
