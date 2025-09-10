@@ -114,7 +114,35 @@ compare_hourly_wage_difference_per_month() {
   echo -e "${color}Difference = $difference\e[0m per month"
 }
 
-annual_gross_to_net_married_filing_jointly() { #note these tax brackets are quite different from those filing taxes as a single
+annual_gross_to_net_single() {
+  local gross="$1"
+  local percentage_kept=
+  if [[ $gross -le 11000 ]]; then
+    percentage_kept="0.875"
+  elif [[ $gross -le 44725 ]]; then
+    percentage_kept="0.855"
+  elif [[ $gross -le 95375 ]]; then
+    percentage_kept="0.755"
+  elif [[ $gross -le 182100 ]]; then
+    percentage_kept="0.735"
+  elif [[ $gross -le 231250 ]]; then
+    percentage_kept="0.655"
+  elif [[ $gross -le 578125 ]]; then
+    percentage_kept="0.625"
+  else
+    percentage_kept="0.605"
+  fi
+  net=$(echo "scale=2; $gross * $percentage_kept" | bc)
+  taxes=$(echo "scale=2; $gross - $net" | bc)
+  echo "Gross = \$$gross"
+  echo "Taxes =~ \$$taxes"
+  echo
+  echo "Take home pay summary (Net Income):"
+  echo "Annual =~ \$$net"
+  wages_from_annual $net
+}
+
+annual_gross_to_net_married_filing_jointly() {
   local gross="$1"
   local percentage_kept=
   if [[ $gross -le 22000 ]]; then
