@@ -114,7 +114,7 @@ compare_hourly_wage_difference_per_month() {
   echo -e "${color}Difference = $difference\e[0m per month"
 }
 
-annual_gross_to_net_rough_estimate() { #note these tax brackets are for married filing jointly
+annual_gross_to_net_married_filing_jointly() { #note these tax brackets are quite different from those filing taxes as a single
   local gross="$1"
   local percentage_kept=
   if [[ $gross -le 22000 ]]; then
