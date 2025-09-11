@@ -283,6 +283,28 @@ compound_interest() { #$1 = amount invested per year; $2 = interest rate; $3 = n
   done
 }
 
+time_equivalence_for_different_wages() { #$1 = original wage, $2 = other wage, $3 = number of hours
+  local original_wage=$1
+  local other_wage=$2
+  local number_of_hours=$3
+  if [[ $1 ]] && [[ $2 ]] && [[ $3 ]]; then
+    local before="$(echo "scale=2; $original_wage * $number_of_hours" | bc)"
+    local after="$(echo "scale=2; $other_wage * $number_of_hours" | bc)"
+    local difference="$(echo "scale=2; $after - $before" | bc)"
+    echo "\$$original_wage an hour for $number_of_hours hours = \$$before"
+    echo "\$$other_wage an hour for $number_of_hours hours = \$$after"
+    color=
+    if (( $(echo "$difference >= 0" | bc -l) )); then
+      color="\e[32m"
+    else
+      color="\e[31m"
+    fi
+    echo -e "${color}Difference = $difference\e[0m"
+  else
+    echo "\$1 = original wage, \$2 = other wage, \$3 = number of hours"
+  fi
+}
+
 view_functions() {
   grep '()' finance.sh
 }
