@@ -111,7 +111,7 @@ compare_hourly_wage_difference_per_month() {
   else
     color="\e[31m"
   fi
-  echo -e "${color}Difference = $difference\e[0m per month"
+  echo -e "${color}Difference = \$$difference\e[0m per month"
 }
 
 annual_gross_to_net_single() {
@@ -299,7 +299,7 @@ time_equivalence_for_different_wages() { #$1 = original wage, $2 = other wage, $
     else
       color="\e[31m"
     fi
-    echo -e "${color}Difference = $difference\e[0m"
+    echo -e "${color}Difference = \$$difference\e[0m"
   else
     echo "\$1 = original wage, \$2 = other wage, \$3 = number of hours"
   fi
