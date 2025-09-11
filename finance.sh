@@ -287,4 +287,4 @@ view_functions() {
   grep '()' finance.sh
 }
 
-alias ff="view_functions"
+alias vf="view_functions"
