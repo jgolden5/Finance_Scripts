@@ -306,7 +306,7 @@ time_equivalence_for_different_wages() { #$1 = original wage, $2 = other wage, $
 }
 
 view_functions() {
-  grep '()' finance.sh
+  grep '()' finance.sh | grep -v 'grep'
 }
 
 alias vf="view_functions"
