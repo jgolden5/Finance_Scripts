@@ -305,6 +305,74 @@ time_equivalence_for_different_wages() { #$1 = original wage, $2 = other wage, $
   fi
 }
 
+print_remaining_pay_days() { #$1 = any payday date (in format "YYYY-MM-DD"); $2 (optional) = -f flag which removes the limit on the year, causing the pay days to continue to be printed forever until the user quits the program
+  local pay_day="$1"
+  local flag="$2"
+  local next_pay_day=$pay_day
+  local original_pay_year="$(echo $pay_day | sed 's/\([0-9][0-9][0-9][0-9]\).*/\1/')"
+  if [[ $flag == '-f' ]]; then
+    echo "Remaining pay days:"
+  else
+    echo "Remaining pay days for $original_pay_year:"
+  fi
+  local pay_year=$original_pay_year
+  while [[ $pay_year == "$original_pay_year" ]] || [[ $flag == '-f' ]]; do
+    echo "$next_pay_day"
+    next_pay_day="$(date -I -d "$next_pay_day + 2 weeks")"
+    pay_year="$(echo $next_pay_day | sed 's/\([0-9][0-9][0-9][0-9]\).*/\1/')"
+  done
+}
+
+check_third_paycheck() { #equal to print_remaining_pay_days parameters
+  local remaining_pay_days=$(print_remaining_pay_days $1)
+  local months=("01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12")
+  for month in "${months[@]}"; do
+    local number_of_paychecks_this_month=$(echo "$remaining_pay_days" | grep -- "-${month}-" | wc -l)
+    local month_name=
+    case $month in
+      01)
+        month_name=January
+        ;;
+      02)
+        month_name=February
+        ;;
+      03)
+        month_name=March
+        ;;
+      04)
+        month_name=April
+        ;;
+      05)
+        month_name=May
+        ;;
+      06)
+        month_name=June
+        ;;
+      07)
+        month_name=July
+        ;;
+      08)
+        month_name=August
+        ;;
+      09)
+        month_name=September
+        ;;
+      10)
+        month_name=October
+        ;;
+      11)
+        month_name=November
+        ;;
+      12)
+        month_name=December
+        ;;
+    esac
+    if [[ $number_of_paychecks_this_month -gt 0 ]]; then
+      echo "$number_of_paychecks_this_month paychecks in $month_name"
+    fi
+  done
+}
+
 view_functions() {
   grep '()' finance.sh | grep -v 'grep'
 }
