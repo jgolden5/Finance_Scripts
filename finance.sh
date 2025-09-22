@@ -85,8 +85,9 @@ add_weekly_wages() {
       weekly_wage="$(echo "scale=2; $hours_a_week * $wage" | bc)"
     fi
     if [[ "$overtime" ]]; then
-      echo "\$$overtime overtime was added"
-      weekly_wage="$(echo "scale=2; $weekly_wage + $overtime * $wage * 1.5" | bc)"
+      overtime_wage="$(echo "scale=2; $overtime * $wage * 1.5" | bc)"
+      echo "$overtime hours of overtime were added [\$$overtime_wage]"
+      weekly_wage="$(echo "scale=2; $weekly_wage + $overtime_wage" | bc)"
     fi
     echo "weekly wage = $weekly_wage"
   done
