@@ -1,0 +1,3 @@
+add pay_cut function to finance.sh which is the opposite of raise()
+make a pay_search function which searches for average salareis at different software companies and at different levels
+implement currency conversion (this one is for fun/proof of concept in my case rather than something I would necessarily use)
