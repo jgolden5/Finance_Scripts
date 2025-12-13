@@ -378,6 +378,27 @@ check_third_paycheck() { #equal to print_remaining_pay_days parameters
   done
 }
 
+equalize_wage() { #$1 = original hourly wage; $2 = number of hours; $3 = compared hourly wage; return value = number of hours required to equalize wage
+  if [[ $1 && $2 && $3 ]]; then
+    local original_hourly_wage="$1"
+    local original_number_of_hours="$2"
+    local original_total_wage="$(echo "scale=2; $original_hourly_wage * $original_number_of_hours" | bc)"
+    local compared_hourly_wage="$3"
+    local number_of_hours_to_equalize="$(echo "scale=2; $original_total_wage / $compared_hourly_wage" | bc)"
+    ORANGE="\e[33m"
+    YELLOW="\e[93m"
+    GREEN="\e[32m"
+    PURPLE="\e[35m"
+    BLUE="\e[34m"
+    NOCOLOR="\e[0m"
+    echo -e "total     = ${ORANGE}\$$original_total_wage ${NOCOLOR}"
+    echo -e "before    = ${YELLOW}\$$original_hourly_wage ${NOCOLOR}for ${PURPLE}$original_number_of_hours ${NOCOLOR}hours"
+    echo -e "equalized = ${GREEN}\$$compared_hourly_wage ${NOCOLOR}for ${BLUE}${number_of_hours_to_equalize} ${NOCOLOR}hours" 
+  else
+    echo 'Please enter paramaters as follows: $1 = original hourly wage; $2 = number of hours; $3 = compared hourly wage; return value = number of hours required to equalize wage'
+  fi
+}
+
 view_functions() {
   grep '()' finance.sh | grep -v 'grep'
 }
