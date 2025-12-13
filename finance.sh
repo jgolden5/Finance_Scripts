@@ -399,6 +399,22 @@ equalize_wage() { #$1 = original hourly wage; $2 = number of hours; $3 = compare
   fi
 }
 
+average_hourly_wage() {
+  read -p "Please list all hourly wages: " wages
+  local wages_array=($wages)
+  local total_weekly_wage=0
+  local total_hours=0
+  for wage in "${wages_array[@]}"; do
+    read -p "How many hours do you work for \$$wage an hour? " hours
+    total_weekly_wage="$(echo "scale=2; $total_weekly_wage + $wage * $hours" | bc)"
+    total_hours="$(echo "scale=2; $total_hours + $hours" | bc)"
+  done
+  local hourly_average="$(echo "scale=2; $total_weekly_wage / $total_hours" | bc)"
+  echo "Total weekly wage = \$$total_weekly_wage"
+  echo "Hours worked per week = $total_hours"
+  echo "Average hourly wage = \$$hourly_average"
+}
+
 view_functions() {
   grep '()' finance.sh | grep -v 'grep'
 }
