@@ -415,8 +415,44 @@ average_hourly_wage() {
   echo "Average hourly wage = \$$hourly_average"
 }
 
+money_to_time() { #$1 = sum of money; $2 = hourly wage (for maximum accuracy, use net hourly wage estimate); $3 = hours per week OR $1 = sum of money; $2 = annual salary (again, for maximum accuracty, estimate net income)
+  if [[ $# < 2 ]]; then
+    echo "Insufficient number of parameters. \$1 = sum of money; \$2 = hourly wage (for maximum accuracy, use net hourly wage estimate); \$3 = hours per week OR \$1 = sum of money; \$2 = annual salary (again, for maximum accuracty, estimate net income)"
+    return 1
+  elif [[ $# > 3 ]]; then
+    echo "Too many parameters. \$1 = sum of money; \$2 = hourly wage (for maximum accuracy, use net hourly wage estimate); \$3 = hours per week OR \$1 = sum of money; \$2 = annual salary (again, for maximum accuracty, estimate net income)"
+    return 1
+  else
+    local sum_of_money="$1"
+    local salary hourly_wage hours_per_week
+    if [[ $# == 2 ]]; then #note, the annual salary (2-parameter) case assumes 40 hours per average week of work
+      salary="$2"
+      hourly_wage="$(echo "scale=2; $salary / 52 / 40" | bc)"
+      hours_per_week=40
+    else #($# == 3)
+      hourly_wage="$2"
+      hours_per_week="$3"
+    fi
+    local hours="$(echo "scale=2; $sum_of_money / $hourly_wage" | bc)"
+    local weeks="$(echo "scale=2; $hours / $hours_per_week" | bc)"
+    local months="$(echo "scale=2; $weeks / 4.345" | bc)"
+    local years="$(echo "scale=2; $months / 12" | bc)"
+    echo -n "\$$sum_of_money = "
+    if (( $(echo "$weeks < 4.35" | bc -l) )); then
+      echo -n "$hours hours [$weeks weeks]"
+    elif (( $(echo "$months < 12" | bc -l) )); then
+      echo -n "$weeks weeks [$months months]"
+    else
+      echo -n "$months months [$years years]"
+    fi
+    echo " (working $hours_per_week hours a week)"
+  fi
+}
+
 view_functions() {
   grep '()' finance.sh | grep -v 'grep'
 }
 
+alias sf='source finance.sh'
+alias vif='vim finance.sh'
 alias vf="view_functions"
