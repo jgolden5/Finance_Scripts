@@ -38,6 +38,14 @@ get_hourly_from_annual() {
   echo "Hourly ~= \$$hourly_from_annual"
 }
 
+overtime_filter_result() {
+  if [[ $# -eq 1 ]] || [[ $# -eq 2 ]]; then
+    overtime "$1" "$2" | sed 's/.*[[:space:]]//'
+  else
+    echo "Sorry, you need 1 or 2 parameters, \$1 = wage; \$2 = hours [60 default]"
+  fi
+}
+
 overtime() {
   wage="$1"
   if [[ "$2" ]]; then
