@@ -38,9 +38,16 @@ get_hourly_from_annual() {
   echo "Hourly ~= \$$hourly_from_annual"
 }
 
-overtime_filter_result() {
-  if [[ $# -eq 1 ]] || [[ $# -eq 2 ]]; then
-    overtime "$1" "$2" | sed 's/.*[[:space:]]//'
+overtime_get_result_only() {
+  if [[ "$1" ]]; then
+    local wage="$1"
+    local ot_hours=
+    if [[ "$2" ]]; then
+      ot_hours="$2"
+    else
+      ot_hours=60
+    fi
+    overtime "$wage" "$ot_hours" | sed 's/.*[[:space:]]//'
   else
     echo "Sorry, you need 1 or 2 parameters, \$1 = wage; \$2 = hours [60 default]"
   fi
@@ -54,8 +61,13 @@ overtime() {
     hours=60
   fi
   overtime_hours=$(echo "scale=2; $hours - 40" | bc)
-  overtime_calculation="$(echo "scale=2; $wage * 40 + $wage * 1.5 * $overtime_hours" | bc)"
-  echo "Overtime for \$$wage an hour at $hours hours a week = $overtime_calculation"
+  if (( $( echo "$overtime_hours > 0" | bc -l ) )); then
+    local overtime_calculation="$(echo "scale=2; $wage * 40 + $wage * 1.5 * $overtime_hours" | bc)"
+    echo "Overtime for \$$wage an hour at $hours hours a week = $overtime_calculation"
+  else
+    local regular_wage="$(echo "scale=2; $wage * $hours" | bc)"
+    echo "No overtime, but here is the total weekly wage for \$$wage an hour at $hours a week = $regular_wage"
+  fi
 }
 
 hours_per_day_per_week() { #40 8 5; (hours per week, hours per day, days per week)
@@ -106,11 +118,14 @@ compare_hourly_wage_difference_per_month() {
   read -p "Please enter constant wage, followed by number of weekly hours at said wage: " constant_wage constant_hours
   read -p "Please enter current wage (before increase), followed by hours: " before_var_wage before_var_hours
   read -p "Please enter imagined wage (after increase), followed by hours: " after_var_wage after_var_hours
-  constant_hours=${constant_hours:-40}
-  before_var_hours=${before_var_hours:-40}
-  after_var_hours=${after_var_hours:-40}
-  before="$(echo "scale=2; ($before_var_wage * $before_var_hours + $constant_wage * $constant_hours) * 4.33" | bc)"
-  after="$(echo "scale=2; ($after_var_wage * $after_var_hours + $constant_wage * $constant_hours) * 4.33" | bc)"
+  local constant_hours="${constant_hours:-40}"
+  local before_var_hours="${before_var_hours:-40}"
+  local after_var_hours="${after_var_hours:-40}"
+  constant_wage="$(overtime_get_result_only "$constant_wage" "$constant_hours")"
+  before_var_wage="$(overtime_get_result_only "$before_var_wage" "$before_var_hours")"
+  after_var_wage="$(overtime_get_result_only "$after_var_wage" "$after_var_hours")"
+  before="$(echo "scale=2; ($before_var_wage + $constant_wage) * 4.35" | bc)"
+  after="$(echo "scale=2; ($after_var_wage + $constant_wage) * 4.35" | bc)"
   difference="$(echo "scale=2; $after - $before" | bc)"
   echo "Before = $before"
   echo "After = $after"
