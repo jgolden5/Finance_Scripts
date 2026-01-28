@@ -60,10 +60,15 @@ overtime() {
   else
     hours=60
   fi
+  if [[ "$3" ]]; then
+    ot_multiplier=$3
+  else
+    ot_multiplier=1.5
+  fi
   overtime_hours=$(echo "scale=2; $hours - 40" | bc)
   if (( $( echo "$overtime_hours > 0" | bc -l ) )); then
-    local overtime_calculation="$(echo "scale=2; $wage * 40 + $wage * 1.5 * $overtime_hours" | bc)"
-    echo "Overtime for \$$wage an hour at $hours hours a week = $overtime_calculation"
+    local overtime_calculation="$(echo "scale=2; $wage * 40 + $wage * $ot_multiplier * $overtime_hours" | bc)"
+    echo "Overtime (${ot_multiplier}x pay) for \$$wage an hour at $hours hours a week = $overtime_calculation"
   else
     local regular_wage="$(echo "scale=2; $wage * $hours" | bc)"
     echo "No overtime, but here is the total weekly wage for \$$wage an hour at $hours a week = $regular_wage"
@@ -124,8 +129,8 @@ compare_hourly_wage_difference_per_month() {
   constant_wage="$(overtime_get_result_only "$constant_wage" "$constant_hours")"
   before_var_wage="$(overtime_get_result_only "$before_var_wage" "$before_var_hours")"
   after_var_wage="$(overtime_get_result_only "$after_var_wage" "$after_var_hours")"
-  before="$(echo "scale=2; ($before_var_wage + $constant_wage) * 4.35" | bc)"
-  after="$(echo "scale=2; ($after_var_wage + $constant_wage) * 4.35" | bc)"
+  before="$(echo "scale=2; ($before_var_wage + $constant_wage) * 4.34" | bc)"
+  after="$(echo "scale=2; ($after_var_wage + $constant_wage) * 4.34" | bc)"
   difference="$(echo "scale=2; $after - $before" | bc)"
   echo "Before = $before"
   echo "After = $after"
@@ -438,7 +443,7 @@ average_hourly_wage() {
   echo "Average hourly wage = \$$hourly_average"
 }
 
-money_to_time() { #$1 = sum of money; $2 = hourly wage (for maximum accuracy, use net hourly wage estimate); $3 = hours per week OR $1 = sum of money; $2 = annual salary (again, for maximum accuracty, estimate net income)
+money_to_time() { #$1 = price of thing; $2 = hourly wage (for maximum accuracy, use net hourly wage estimate); $3 = hours per week OR $1 = sum of money; $2 = annual salary (again, for maximum accuracty, estimate net income)
   if [[ $# < 2 ]]; then
     echo "Insufficient number of parameters. \$1 = sum of money; \$2 = hourly wage (for maximum accuracy, use net hourly wage estimate); \$3 = hours per week OR \$1 = sum of money; \$2 = annual salary (again, for maximum accuracty, estimate net income)"
     return 1
@@ -461,7 +466,7 @@ money_to_time() { #$1 = sum of money; $2 = hourly wage (for maximum accuracy, us
     local months="$(echo "scale=2; $weeks / 4.345" | bc)"
     local years="$(echo "scale=2; $months / 12" | bc)"
     echo -n "\$$sum_of_money = "
-    if (( $(echo "$weeks < 4.35" | bc -l) )); then
+    if (( $(echo "$weeks < 4.34" | bc -l) )); then
       echo -n "$hours hours [$weeks weeks]"
     elif (( $(echo "$months < 12" | bc -l) )); then
       echo -n "$weeks weeks [$months months]"
